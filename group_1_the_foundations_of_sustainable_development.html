@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Group 1 | The Foundations of Sustainable Development</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+            editorial: ['Instrument Serif', 'serif'],
+          },
+          colors: {
+            forest: {
+              950: '#061A13',
+              900: '#0F3D2E',
+              800: '#1B4332',
+              700: '#2D6A4F',
+              600: '#40916C',
+              500: '#52B788',
+              100: '#D8F3DC',
+              50: '#F2F9F5',
+            },
+            amberwarm: {
+              600: '#D97706',
+              500: '#F59E0B',
+              400: '#FBBF24',
+              100: '#FEF3C7',
+              50: '#FFFBEB',
+            },
+            stonebg: '#0B1D16',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #040E0A;
+      color: #F8FAF9;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Presentation Stage Scaling & Framing */
+    #app-viewport {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1rem 4.75rem 1rem;
+      background: radial-gradient(circle at 50% 15%, #123326 0%, #040D09 100%);
+    }
+
+    #deck-stage {
+      position: relative;
+      width: 100%;
+      max-width: 1380px;
+      height: 100%;
+      max-height: 780px;
+      background: #081C15;
+      border-radius: 26px;
+      box-shadow: 0 35px 90px -15px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+    }
+
+    /* Subtle Film Grain & Vignette Atmosphere */
+    #deck-stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 25;
+      background: radial-gradient(circle at center, transparent 58%, rgba(3, 12, 8, 0.45) 100%);
+    }
+
+    /* Slide Transition Choreography with Depth */
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 2.25rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateX(55px) scale(0.975);
+      filter: blur(4px);
+      transition:
+        opacity 0.65s var(--ease-out-expo),
+        transform 0.75s var(--ease-out-expo),
+        filter 0.65s var(--ease-out-expo),
+        visibility 0.65s;
+      overflow-y: auto;
+    }
+
+    .slide.prev-exit {
+      transform: translateX(-55px) scale(0.975);
+      filter: blur(4px);
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateX(0) scale(1);
+      filter: blur(0);
+      z-index: 10;
+    }
+
+    /* Cinematic Ken Burns Slow Camera Drift on Background Imagery */
+    @keyframes kenBurnsDrift {
+      0% {
+        transform: scale(1.0) translate(0%, 0%);
+      }
+      50% {
+        transform: scale(1.09) translate(-1.2%, -0.8%);
+      }
+      100% {
+        transform: scale(1.13) translate(0.8%, -1.2%);
+      }
+    }
+
+    .bg-media-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-media-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.48;
+      transform: scale(1.0);
+      transition: opacity 0.8s ease;
+    }
+
+    .slide.active .bg-media-layer img {
+      animation: kenBurnsDrift 24s ease-in-out infinite alternate;
+    }
+
+    /* Card Image Zoom on Hover */
+    .card-photo-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+    .card-photo-wrap img {
+      transition: transform 0.85s var(--ease-out-expo);
+    }
+    .eco-card:hover .card-photo-wrap img {
+      transform: scale(1.08);
+    }
+
+    /* Staggered Entrance Animations inside Active Slide */
+    .stagger {
+      opacity: 0;
+      transform: translateY(22px);
+      transition:
+        opacity 0.6s var(--ease-out-expo),
+        transform 0.65s var(--ease-out-expo);
+    }
+
+    .slide.active .stagger {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide.active .delay-1 { transition-delay: 0.08s; }
+    .slide.active .delay-2 { transition-delay: 0.16s; }
+    .slide.active .delay-3 { transition-delay: 0.24s; }
+    .slide.active .delay-4 { transition-delay: 0.32s; }
+    .slide.active .delay-5 { transition-delay: 0.40s; }
+    .slide.active .delay-6 { transition-delay: 0.48s; }
+
+    /* Floating Light Particles & Radar Sweep */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(2deg); }
+    }
+    @keyframes pulseRing {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.07); opacity: 0.85; }
+    }
+    @keyframes radarSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-float {
+      animation: floatSlow 9s ease-in-out infinite;
+    }
+    .animate-pulse-ring {
+      transform-origin: center;
+      animation: pulseRing 5.5s ease-in-out infinite;
+    }
+    .animate-radar {
+      transform-origin: center;
+      animation: radarSpin 16s linear infinite;
+    }
+
+    /* Glassmorphic Editorial Cards */
+    .glass-panel {
+      background: rgba(9, 29, 21, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.45);
+    }
+
+    .eco-card {
+      background: rgba(11, 34, 25, 0.76);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+    }
+    .eco-card:hover {
+      transform: translateY(-5px);
+      background: rgba(15, 45, 33, 0.88);
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.55);
+      border-color: rgba(245, 158, 11, 0.55);
+    }
+
+    /* Interactive Venn Diagram Nodes */
+    .venn-circle {
+      transition: transform 0.45s var(--ease-spring), fill-opacity 0.3s ease, stroke-width 0.3s ease;
+      cursor: pointer;
+    }
+    .venn-circle:hover, .venn-circle.selected {
+      transform: scale(1.04);
+      fill-opacity: 0.42;
+      stroke-width: 3;
+    }
+
+    /* Custom Scrollbar */
+    .slide::-webkit-scrollbar {
+      width: 6px;
+    }
+    .slide::-webkit-scrollbar-thumb {
+      background: rgba(82, 183, 136, 0.3);
+      border-radius: 999px;
+    }
+
+    @media (max-width: 900px) {
+      .slide {
+        padding: 1.4rem 1.4rem;
+      }
+      #app-viewport {
+        padding: 0.5rem 0.5rem 4.5rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Presentation Viewport -->
+  <div id="app-viewport">
+    <main id="deck-stage" aria-live="polite">
+
+      <!-- ========================================================= -->
+      <!-- SLIDE 1: TITLE SLIDE — GROUP 1                            -->
+      <!-- ========================================================= -->
+      <section class="slide active text-white" data-slide="1" data-title="Group 1: The Foundations of Sustainable Development">
+        <div class="bg-media-layer bg-gradient-to-br from-forest-950 via-forest-900 to-forest-800">
+          <img
+            src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1800&q=80"
+            alt="Wind turbines rising above misty green hills at golden hour"
+            onerror="this.style.display='none'"
+          />
+          <div class="absolute inset-0 bg-gradient-to-r from-forest-950/95 via-forest-950/78 to-forest-900/45"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-forest-950/92 via-transparent to-forest-950/50"></div>
+        </div>
+
+        <svg class="absolute right-[-4%] top-[4%] w-[540px] h-[540px] pointer-events-none opacity-45 animate-float z-[1]" viewBox="0 0 600 600" fill="none">
+          <circle cx="310" cy="290" r="220" stroke="#F59E0B" stroke-width="1" stroke-dasharray="4 10" class="animate-pulse-ring" />
+          <circle cx="310" cy="290" r="165" stroke="#52B788" stroke-width="1.2" opacity="0.6" />
+          <circle cx="310" cy="290" r="110" stroke="#D8F3DC" stroke-width="0.8" stroke-dasharray="2 6" />
+        </svg>
+
+        <!-- Top Course & STI Logo Header -->
+        <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 stagger delay-1">
+          <div class="flex items-center gap-3">
+            <div class="bg-white/95 px-3.5 py-1.5 rounded-2xl shadow-lg border border-white/40 flex items-center gap-2 backdrop-blur-md">
+              <img
+                src="sti_logo.png"
+                alt="STI College Logo"
+                class="h-8 sm:h-9 w-auto object-contain"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+              />
+              <svg style="display:none;" class="h-8 sm:h-9 w-auto" viewBox="0 0 210 115" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="STI College Logo">
+                <circle cx="58" cy="58" r="44" fill="#0066B2" />
+                <path d="M22 40C44 26 78 24 98 36" stroke="#F5A623" stroke-width="5.5" stroke-linecap="round" />
+                <path d="M16 62C42 46 80 44 102 58" stroke="#F5A623" stroke-width="5.5" stroke-linecap="round" />
+                <path d="M24 84C48 70 78 68 96 80" stroke="#F5A623" stroke-width="5.5" stroke-linecap="round" />
+                <path d="M46 16C34 40 34 76 48 100" stroke="#F5A623" stroke-width="5.5" stroke-linecap="round" />
+                <path d="M72 15C62 40 62 76 74 100" stroke="#F5A623" stroke-width="5.5" stroke-linecap="round" />
+                <polygon points="10,48 34,42 12,56" fill="#FFFFFF" />
+                <polygon points="10,66 36,58 14,74" fill="#FFFFFF" />
+                <polygon points="16,82 40,74 22,90" fill="#FFFFFF" />
+                <text x="68" y="88" fill="#0066B2" stroke="#FFFFFF" stroke-width="4" paint-order="stroke" font-family="Georgia, 'Times New Roman', serif" font-weight="900" font-size="74" letter-spacing="-2">STI</text>
+              </svg>
+            </div>
+
+            <span class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/45 border border-white/15 text-forest-100 text-xs font-semibold tracking-wider uppercase backdrop-blur-md">
+              <span class="w-2 h-2 rounded-full bg-amberwarm-500 animate-ping"></span>
+              GE2406 • STI College Module 06
+            </span>
+          </div>
+
+          <span class="text-xs text-amberwarm-300 font-bold tracking-widest uppercase bg-amberwarm-500/15 px-4 py-1.5 rounded-full border border-amberwarm-400/35 backdrop-blur-sm">
+            Group 1 Presentation
+          </span>
+        </div>
+
+        <!-- Center Title Hero -->
+        <div class="relative z-10 max-w-4xl my-auto">
+          <p class="text-amberwarm-400 font-semibold tracking-[0.22em] uppercase text-xs sm:text-sm mb-3 stagger delay-1">
+            GROUP 1 • Core Concepts, Principles &amp; Global Governance
+          </p>
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.06] mb-5 stagger delay-2">
+            The <span class="font-editorial italic font-normal text-amberwarm-400">Foundations</span> of Sustainable Development
+          </h1>
+          <p class="text-base sm:text-xl text-forest-100/90 font-normal leading-relaxed max-w-2xl stagger delay-3">
+            Exploring how humanity balances economic prosperity, social inclusion, and environmental stewardship to thrive within planetary boundaries.
+          </p>
+        </div>
+
+        <!-- 5-Part Assigned Topic Roadmap (Topics I–V) -->
+        <div class="relative z-10 grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-4 border-t border-white/15 stagger delay-4">
+          <button onclick="goToSlide(2)" class="glass-panel text-left rounded-2xl p-3 hover:border-amberwarm-400/60 transition">
+            <div class="text-[11px] text-amberwarm-400 font-bold uppercase tracking-wider">Topic I</div>
+            <div class="text-xs sm:text-sm font-semibold text-white mt-0.5">Introduction</div>
+          </button>
+          <button onclick="goToSlide(3)" class="glass-panel text-left rounded-2xl p-3 hover:border-amberwarm-400/60 transition">
+            <div class="text-[11px] text-amberwarm-400 font-bold uppercase tracking-wider">Topic II</div>
+            <div class="text-xs sm:text-sm font-semibold text-white mt-0.5">Core Principles</div>
+          </button>
+          <button onclick="goToSlide(4)" class="glass-panel text-left rounded-2xl p-3 hover:border-emerald-400/60 transition">
+            <div class="text-[11px] text-emerald-300 font-bold uppercase tracking-wider">Topic III</div>
+            <div class="text-xs sm:text-sm font-semibold text-white mt-0.5">Three Dimensions</div>
+          </button>
+          <button onclick="goToSlide(6)" class="glass-panel text-left rounded-2xl p-3 hover:border-sky-400/60 transition">
+            <div class="text-[11px] text-sky-300 font-bold uppercase tracking-wider">Topic IV</div>
+            <div class="text-xs sm:text-sm font-semibold text-white mt-0.5">Challenges &amp; Action</div>
+          </button>
+          <button onclick="goToSlide(8)" class="col-span-2 sm:col-span-1 glass-panel text-left rounded-2xl p-3 hover:border-amberwarm-400/60 transition">
+            <div class="text-[11px] text-amberwarm-400 font-bold uppercase tracking-wider">Topic V</div>
+            <div class="text-xs sm:text-sm font-semibold text-white mt-0.5">Why It Matters</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- SLIDE 2: TOPIC I — INTRODUCTION TO SUSTAINABLE DEVELOPMENT-->
+      <!-- ========================================================= -->
+      <section class="slide text-white" data-slide="2" data-title="I. Introduction to Sustainable Development">
+        <div class="bg-media-layer bg-forest-950">
+          <img
+            src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1800&q=80"
+            alt="Lush green mountain valley and winding river"
+            onerror="this.style.display='none'"
+          />
+          <div class="absolute inset-0 bg-gradient-to-br from-forest-950/94 via-forest-950/88 to-forest-900/82"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-wrap items-end justify-between gap-2 border-b border-white/15 pb-3.5 stagger delay-1">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Topic I • Introduction to Sustainable Development</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Defining a Balanced &amp; Thriving Future</h2>
+          </div>
+          <span class="text-xs font-medium text-forest-100 bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-sm">
+            Origins &amp; Paradigm Shift
+          </span>
+        </div>
+
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 my-auto py-2 items-stretch">
+          <!-- Left: Core Definition & Historical Milestones -->
+          <div class="lg:col-span-6 flex flex-col justify-between gap-4 stagger delay-2">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-amberwarm-500">
+              <div class="text-amberwarm-400 text-xs font-bold uppercase tracking-widest mb-2">Foundational Definition (GE2406)</div>
+              <p class="text-lg sm:text-xl font-display font-semibold leading-snug text-white">
+                &ldquo;Sustainable development is the practice of meeting current needs without compromising the ability of future generations to meet theirs.&rdquo;
+              </p>
+              <p class="text-xs sm:text-sm text-forest-100/80 mt-3 leading-relaxed">
+                In a rapidly changing world facing climate disruption and resource strain, sustainability ensures long-term resilience by balancing <strong class="text-amberwarm-400">economic growth</strong>, <strong class="text-emerald-300">social inclusion</strong>, and <strong class="text-sky-300">environmental protection</strong>.
+              </p>
+            </div>
+
+            <!-- Historical Context Timeline (External Research Enrichment) -->
+            <div class="glass-panel p-5 rounded-2xl">
+              <div class="text-xs font-bold uppercase tracking-widest text-emerald-300 mb-3">Global Historical Milestones</div>
+              <div class="space-y-3 text-xs sm:text-sm">
+                <div class="flex items-start gap-3">
+                  <span class="px-2.5 py-1 rounded-lg bg-amberwarm-500/20 border border-amberwarm-400/40 text-amberwarm-300 font-display font-bold text-xs shrink-0">1987</span>
+                  <div>
+                    <strong class="text-white">UN Brundtland Commission (&ldquo;Our Common Future&rdquo;):</strong>
+                    <span class="text-forest-100/80"> Coined the landmark definition linking environmental health with human development.</span>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-display font-bold text-xs shrink-0">2015</span>
+                  <div>
+                    <strong class="text-white">UN 2030 Agenda &amp; Paris Agreement:</strong>
+                    <span class="text-forest-100/80"> Operationalized sustainability into 17 global goals and climate targets for all nations.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Paradigm Comparison Toggle -->
+          <div class="lg:col-span-6 glass-panel rounded-2xl p-6 flex flex-col justify-between stagger delay-3">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Interactive Paradigm Shift</span>
+                <div class="inline-flex rounded-xl bg-black/40 p-1 border border-white/10">
+                  <button id="btn-paradigm-old" onclick="setParadigm('extractive')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-forest-100/75 hover:text-white">
+                    Old Linear Model
+                  </button>
+                  <button id="btn-paradigm-new" onclick="setParadigm('sustainable')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amberwarm-500 text-forest-950 shadow">
+                    Sustainable Model
+                  </button>
+                </div>
+              </div>
+
+              <div id="paradigm-card" class="rounded-2xl p-5 bg-emerald-500/10 border border-emerald-400/35 transition-all">
+                <span id="paradigm-tag" class="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 mb-2">
+                  Regenerative &amp; Cyclical Approach
+                </span>
+                <h3 id="paradigm-title" class="text-xl font-bold text-white mb-2">
+                  Harmonized Development Within Limits
+                </h3>
+                <p id="paradigm-summary" class="text-xs sm:text-sm text-forest-100/85 leading-relaxed mb-4">
+                  Treats the economy, human well-being, and nature as an integrated system—designing growth that restores ecosystems and uplifts marginalized communities.
+                </p>
+                <ul id="paradigm-points" class="space-y-2 text-xs sm:text-sm text-forest-50">
+                  <li class="flex items-center gap-2.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span><span><strong>Time Horizon:</strong> Multi-generational stewardship over quick gains</span></li>
+                  <li class="flex items-center gap-2.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span><span><strong>Resource Flow:</strong> Circular reuse, clean energy &amp; conservation</span></li>
+                  <li class="flex items-center gap-2.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span><span><strong>Success Metric:</strong> Shared prosperity, health &amp; ecological balance</span></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-white/10 text-xs text-forest-100/75 flex items-center justify-between">
+              <span>Toggle above to compare industrial extraction vs. sustainability</span>
+              <span class="text-amberwarm-400 font-semibold">Topic I of V</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- SLIDE 3: TOPIC II — PRINCIPLES OF SUSTAINABLE DEVELOPMENT -->
+      <!-- ========================================================= -->
+      <section class="slide text-white" data-slide="3" data-title="II. Principles of Sustainable Development">
+        <div class="bg-media-layer bg-forest-950">
+          <img
+            src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?auto=format&fit=crop&w=1800&q=80"
+            alt="Morning sunlight filtering through green forest leaves"
+            onerror="this.style.display='none'"
+          />
+          <div class="absolute inset-0 bg-gradient-to-br from-forest-950/93 via-forest-950/87 to-forest-900/82"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-wrap items-end justify-between gap-2 border-b border-white/15 pb-3.5 stagger delay-1">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Topic II • Principles of Sustainable Development</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Core Guiding Principles &amp; Equity Pillars</h2>
+          </div>
+          <span class="text-xs font-medium text-forest-100 bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-sm">
+            Interactive: Click any circle to inspect
+          </span>
+        </div>
+
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 my-auto items-center py-2">
+          <!-- Left: Principle Justification Inspector + Equity Lenses -->
+          <div class="lg:col-span-6 flex flex-col gap-4 stagger delay-2">
+            <div id="venn-inspector" class="glass-panel p-5 sm:p-6 rounded-2xl border-l-4 border-l-amberwarm-500 transition-all">
+              <div class="flex items-center justify-between mb-2">
+                <span id="venn-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amberwarm-500/20 text-amberwarm-400 border border-amberwarm-500/30">Balanced Intersection</span>
+                <span class="text-xs text-forest-100/60">Handout Justification</span>
+              </div>
+              <h3 id="venn-title" class="text-xl font-bold text-white">Three Interlocking Principles</h3>
+              <p id="venn-desc" class="text-sm text-forest-100/85 mt-1.5 leading-relaxed">
+                Click <strong class="text-amberwarm-400">Economic Growth</strong>, <strong class="text-emerald-300">Social Inclusion</strong>, or <strong class="text-sky-300">Environmental Protection</strong> in the diagram to inspect its core justification and real-world mandate.
+              </p>
+            </div>
+
+            <!-- Two Foundational Equity Ethics (Enriched Context) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div class="glass-panel p-4 rounded-2xl">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-amberwarm-400 mb-1">Justice Across Time</div>
+                <h4 class="text-sm font-bold text-white mb-1">Intergenerational Equity</h4>
+                <p class="text-xs text-forest-100/80 leading-relaxed">
+                  Each generation acts as a trustee of Earth, ensuring future citizens inherit intact ecosystems and stable resources.
+                </p>
+              </div>
+              <div class="glass-panel p-4 rounded-2xl">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-300 mb-1">Justice Today</div>
+                <h4 class="text-sm font-bold text-white mb-1">Intragenerational Equity</h4>
+                <p class="text-xs text-forest-100/80 leading-relaxed">
+                  Fair distribution of opportunities, clean air, water, and essential services across all communities living today.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Interactive SVG Venn Diagram -->
+          <div class="lg:col-span-6 flex flex-col items-center justify-center glass-panel rounded-2xl p-4 stagger delay-3">
+            <svg viewBox="0 0 460 350" class="w-full max-w-[420px] h-auto" role="img" aria-label="Three Principles of Sustainable Development Venn Diagram">
+              <g onclick="selectVenn('economic')" class="venn-circle" id="node-economic">
+                <circle cx="230" cy="120" r="95" fill="#F59E0B" fill-opacity="0.24" stroke="#FBBF24" stroke-width="2" />
+                <text x="230" y="88" text-anchor="middle" fill="#FDE68A" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="14">Economic Growth</text>
+                <text x="230" y="106" text-anchor="middle" fill="#FEF3C7" font-family="Inter, sans-serif" font-size="11">Prosperity &amp; Opportunity</text>
+              </g>
+
+              <g onclick="selectVenn('social')" class="venn-circle" id="node-social">
+                <circle cx="155" cy="235" r="95" fill="#10B981" fill-opacity="0.22" stroke="#34D399" stroke-width="2" />
+                <text x="128" y="246" text-anchor="middle" fill="#A7F3D0" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="14">Social Inclusion</text>
+                <text x="128" y="264" text-anchor="middle" fill="#D1FAE5" font-family="Inter, sans-serif" font-size="11">Equity &amp; Services</text>
+              </g>
+
+              <g onclick="selectVenn('environmental')" class="venn-circle" id="node-environmental">
+                <circle cx="305" cy="235" r="95" fill="#3B82F6" fill-opacity="0.22" stroke="#60A5FA" stroke-width="2" />
+                <text x="334" y="246" text-anchor="middle" fill="#BFDBFE" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="14">Environmental</text>
+                <text x="334" y="264" text-anchor="middle" fill="#DBEAFE" font-family="Inter, sans-serif" font-size="11">Resource Preservation</text>
+              </g>
+
+              <g onclick="selectVenn('center')" class="cursor-pointer">
+                <circle cx="230" cy="197" r="37" fill="#061A13" stroke="#F59E0B" stroke-width="2" />
+                <text x="230" y="194" text-anchor="middle" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="9.5">SUSTAINABLE</text>
+                <text x="230" y="207" text-anchor="middle" fill="#FBBF24" font-family="Plus Jakarta Sans, sans-serif" font-weight="600" font-size="9">BALANCE</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Bottom Principle Selector Buttons -->
+        <div class="relative z-10 grid grid-cols-3 gap-3 pt-1 stagger delay-4">
+          <button onclick="selectVenn('economic')" class="text-left px-4 py-2.5 rounded-xl bg-amberwarm-500/15 border border-amberwarm-500/35 hover:bg-amberwarm-500/25 transition backdrop-blur-sm">
+            <span class="block text-[11px] font-bold text-amberwarm-400 uppercase">Principle 01</span>
+            <span class="text-sm font-semibold text-white">Economic Growth</span>
+          </button>
+          <button onclick="selectVenn('social')" class="text-left px-4 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/35 hover:bg-emerald-500/25 transition backdrop-blur-sm">
+            <span class="block text-[11px] font-bold text-emerald-300 uppercase">Principle 02</span>
+            <span class="text-sm font-semibold text-white">Social Inclusion</span>
+          </button>
+          <button onclick="selectVenn('environmental')" class="text-left px-4 py-2.5 rounded-xl bg-sky-500/15 border border-sky-500/35 hover:bg-sky-500/25 transition backdrop-blur-sm">
+            <span class="block text-[11px] font-bold text-sky-300 uppercase">Principle 03</span>
+            <span class="text-sm font-semibold text-white">Environmental Protection</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- SLIDE 4: TOPIC III — DIMENSIONS OF SUSTAINABLE DEV        -->
+      <!-- ========================================================= -->
+      <section class="slide text-white" data-slide="4" data-title="III. Dimensions of Sustainable Development">
+        <div class="bg-media-layer bg-forest-950">
+          <img
+            src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1800&q=80"
+            alt="Solar panels in green landscape"
+            onerror="this.style.display='none'"
+          />
+          <div class="absolute inset-0 bg-forest-950/91"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-wrap items-end justify-between gap-2 border-b border-white/15 pb-3.5 stagger delay-1">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Topic III • Dimensions of Sustainable Development</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">The Three Dimensions &amp; Triple Bottom Line</h2>
+          </div>
+          <span class="text-xs font-semibold text-emerald-300 bg-emerald-500/15 px-3.5 py-1.5 rounded-full border border-emerald-400/30">
+            Planet • People • Prosperity
+          </span>
+        </div>
+
+        <div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-5 my-auto py-2">
+          <!-- Environmental Dimension Card -->
+          <div class="eco-card rounded-2xl overflow-hidden flex flex-col justify-between stagger delay-2">
+            <div>
+              <div class="card-photo-wrap h-32 w-full bg-forest-900">
+                <img
+                  src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=900&q=80"
+                  alt="Solar panels in green landscape"
+                  class="w-full h-full object-cover"
+                  onerror="this.style.display='none'"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0B2219] via-transparent to-black/20"></div>
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-bold uppercase tracking-wider text-emerald-300 border border-white/15">
+                  Dimension 01 • Planet
+                </span>
+              </div>
+              <div class="p-5 pt-3">
+                <h3 class="text-xl font-bold text-white mb-1.5">Environmental</h3>
+                <p class="text-xs sm:text-sm text-forest-100/80 leading-relaxed">
+                  Minimizes ecological degradation by safeguarding biodiversity, natural habitats, and life-supporting cycles.
+                </p>
+              </div>
+            </div>
+            <ul class="mx-5 mb-5 space-y-1.5 text-xs font-medium text-forest-100 bg-white/5 p-3 rounded-xl border border-white/10">
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>Renewable energy adoption</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>Sustainable &amp; regenerative agriculture</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>Water conservation &amp; ecosystem protection</li>
+            </ul>
+          </div>
+
+          <!-- Social Dimension Card -->
+          <div class="eco-card rounded-2xl overflow-hidden flex flex-col justify-between stagger delay-3">
+            <div>
+              <div class="card-photo-wrap h-32 w-full bg-forest-900">
+                <img
+                  src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80"
+                  alt="Diverse community smiling together outdoors"
+                  class="w-full h-full object-cover"
+                  onerror="this.style.display='none'"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0B2219] via-transparent to-black/20"></div>
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-bold uppercase tracking-wider text-sky-300 border border-white/15">
+                  Dimension 02 • People
+                </span>
+              </div>
+              <div class="p-5 pt-3">
+                <h3 class="text-xl font-bold text-white mb-1.5">Social</h3>
+                <p class="text-xs sm:text-sm text-forest-100/80 leading-relaxed">
+                  Ensures social equity and enhances quality of life for all—especially marginalized and vulnerable populations.
+                </p>
+              </div>
+            </div>
+            <ul class="mx-5 mb-5 space-y-1.5 text-xs font-medium text-forest-100 bg-white/5 p-3 rounded-xl border border-white/10">
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>Equitable access to quality education</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>Universal basic healthcare &amp; sanitation</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>Empowering vulnerable &amp; marginalized groups</li>
+            </ul>
+          </div>
+
+          <!-- Economic Dimension Card -->
+          <div class="eco-card rounded-2xl overflow-hidden flex flex-col justify-between stagger delay-4">
+            <div>
+              <div class="card-photo-wrap h-32 w-full bg-forest-900">
+                <img
+                  src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=900&q=80"
+                  alt="Clean green energy infrastructure and modern economy"
+                  class="w-full h-full object-cover"
+                  onerror="this.style.display='none'"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0B2219] via-transparent to-black/20"></div>
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-bold uppercase tracking-wider text-amberwarm-400 border border-white/15">
+                  Dimension 03 • Prosperity
+                </span>
+              </div>
+              <div class="p-5 pt-3">
+                <h3 class="text-xl font-bold text-white mb-1.5">Economic</h3>
+                <p class="text-xs sm:text-sm text-forest-100/80 leading-relaxed">
+                  Encourages economic activities that are environmentally sound, socially inclusive, and viable in the long term.
+                </p>
+              </div>
+            </div>
+            <ul class="mx-5 mb-5 space-y-1.5 text-xs font-medium text-forest-100 bg-white/5 p-3 rounded-xl border border-white/10">
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amberwarm-400"></span>Green technologies &amp; circular innovation</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amberwarm-400"></span>Sustainable &amp; ethical business practices</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amberwarm-400"></span>Long-term investments in clean energy</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="relative z-10 glass-panel rounded-xl px-5 py-2.5 text-xs sm:text-sm text-forest-100 flex items-center justify-between stagger delay-5">
+          <span><strong class="text-amberwarm-400">Triple Bottom Line (John Elkington):</strong> Organizations and nations must measure success across <em>Planet, People, and Profit</em>—not financial GDP alone.</span>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- SLIDE 5: TOPIC III (CONT.) — SYSTEMS & NESTED DEPENDENCIES-->
+      <!-- ========================================================= -->
+      <section class="slide text-white" data-slide="5" data-title="III. How Dimensions Interlock">
+        <div class="bg-media-layer bg-forest-950">
+          <img
+            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1800&q=80"
+            alt="Earth biosphere from orbit"
+            onerror="this.style.display='none'"
+          />
+          <div class="absolute inset-0 bg-gradient-to-b from-forest-950/92 via-forest-950/86 to-forest-950/94"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-wrap items-end justify-between gap-2 border-b border-white/15 pb-3.5 stagger delay-1">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Topic III (Systems Perspective) • Interconnected Dimensions</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Why No Dimension Thrives in Isolation</h2>
+          </div>
+          <div class="inline-flex rounded-xl bg-black/45 p-1 border border-white/15 backdrop-blur-md">
+            <button id="btn-model-nested" onclick="setSystemModel('nested')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amberwarm-500 text-forest-950 shadow">
+              Nested Dependencies
+            </button>
+            <button id="btn-model-pillars" onclick="setSystemModel('pillars')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-forest-100/80 hover:text-white">
+              Three Pillars View
+            </button>
+          </div>
+        </div>
+
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 my-auto items-center py-2">
+          <!-- Left: Interactive Concentric / Pillars Visual -->
+          <div class="lg:col-span-6 glass-panel rounded-2xl p-5 flex flex-col items-center justify-center stagger delay-2">
+            <!-- Nested Concentric Rings SVG -->
+            <svg id="svg-model-nested" viewBox="0 0 420 320" class="w-full max-w-[390px] h-auto" role="img" aria-label="Nested Dependencies Model of Sustainability">
+              <!-- Outer Ring: Environment / Biosphere -->
+              <circle cx="210" cy="160" r="145" fill="#10B981" fill-opacity="0.16" stroke="#34D399" stroke-width="2.5" />
+              <text x="210" y="38" text-anchor="middle" fill="#6EE7B7" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="13">1. ENVIRONMENT (EARTH'S BIOSPHERE)</text>
+              <text x="210" y="54" text-anchor="middle" fill="#D1FAE5" font-family="Inter, sans-serif" font-size="10.5">Climate, freshwater, biodiversity &amp; planetary boundaries</text>
+
+              <!-- Middle Ring: Society -->
+              <circle cx="210" cy="176" r="102" fill="#3B82F6" fill-opacity="0.22" stroke="#60A5FA" stroke-width="2.5" />
+              <text x="210" y="102" text-anchor="middle" fill="#93C5FD" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="12.5">2. HUMAN SOCIETY</text>
+              <text x="210" y="117" text-anchor="middle" fill="#DBEAFE" font-family="Inter, sans-serif" font-size="10">Health, education, culture &amp; institutions</text>
+
+              <!-- Inner Core: Economy -->
+              <circle cx="210" cy="196" r="56" fill="#F59E0B" fill-opacity="0.32" stroke="#FBBF24" stroke-width="2.5" />
+              <text x="210" y="193" text-anchor="middle" fill="#FDE68A" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="12.5">3. ECONOMY</text>
+              <text x="210" y="209" text-anchor="middle" fill="#FEF3C7" font-family="Inter, sans-serif" font-size="9.5">Markets &amp; green tech</text>
+            </svg>
+
+            <!-- Classic Three Pillars SVG (Hidden by default) -->
+            <svg id="svg-model-pillars" viewBox="0 0 420 320" class="hidden w-full max-w-[390px] h-auto" role="img" aria-label="Three Pillars Temple Model">
+              <!-- Roof -->
+              <polygon points="210,25 45,85 375,85" fill="#F59E0B" fill-opacity="0.28" stroke="#FBBF24" stroke-width="2" />
+              <text x="210" y="68" text-anchor="middle" fill="#FDE68A" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="13">SUSTAINABLE DEVELOPMENT</text>
+              <!-- Pillar 1 -->
+              <rect x="65" y="95" width="82" height="165" rx="10" fill="#10B981" fill-opacity="0.22" stroke="#34D399" stroke-width="2" />
+              <text x="106" y="175" text-anchor="middle" fill="#A7F3D0" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11.5">Environment</text>
+              <!-- Pillar 2 -->
+              <rect x="169" y="95" width="82" height="165" rx="10" fill="#3B82F6" fill-opacity="0.22" stroke="#60A5FA" stroke-width="2" />
+              <text x="210" y="175" text-anchor="middle" fill="#BFDBFE" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11.5">Society</text>
+              <!-- Pillar 3 -->
+              <rect x="273" y="95" width="82" height="165" rx="10" fill="#F59E0B" fill-opacity="0.22" stroke="#FBBF24" stroke-width="2" />
+              <text x="314" y="175" text-anchor="middle" fill="#FDE68A" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11.5">Economy</text>
+              <!-- Base -->
+              <rect x="45" y="270" width="330" height="26" rx="8" fill="#FFFFFF" fill-opacity="0.12" stroke="#FFFFFF" stroke-opacity="0.3" />
+              <text x="210" y="287" text-anchor="middle" fill="#FFFFFF" font-family="Inter, sans-serif" font-weight="600" font-size="10.5">Intergenerational Equity &amp; Good Governance</text>
+            </svg>
+          </div>
+
+          <!-- Right: Explanation & Domino Effect -->
+          <div class="lg:col-span-6 flex flex-col gap-4 stagger delay-3">
+            <div id="model-explanation" class="glass-panel p-6 rounded-2xl border-l-4 border-l-emerald-400">
+              <span class="text-xs font-bold uppercase tracking-widest text-emerald-300">Strong Sustainability Model</span>
+              <h3 class="text-xl font-bold text-white mt-1 mb-2">The Economy is a Wholly Owned Subsidiary of the Environment</h3>
+              <p class="text-sm text-forest-100/85 leading-relaxed">
+                Rather than three separate columns, the <strong class="text-white">Nested Dependencies</strong> model reveals a strict hierarchy: human society depends on a stable biosphere, and the economy exists inside society to serve human well-being.
+              </p>
+            </div>
+
+            <div class="eco-card rounded-2xl p-5 space-y-3">
+              <div class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Real-World Interdependence Chain</div>
+              <div class="flex items-start gap-3 text-xs sm:text-sm">
+                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold shrink-0">01</span>
+                <p class="text-forest-100/85"><strong class="text-white">Environmental Shock:</strong> Deforestation and soil erosion reduce freshwater availability and crop yields.</p>
+              </div>
+              <div class="flex items-start gap-3 text-xs sm:text-sm">
+                <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-bold shrink-0">02</span>
+                <p class="text-forest-100/85"><strong class="text-white">Social Consequence:</strong> Food prices rise, triggering malnutrition, displacement, and unequal hardship for vulnerable families.</p>
+              </div>
+              <div class="flex items-start gap-3 text-xs sm:text-sm">
+                <span class="px-2 py-0.5 rounded bg-amberwarm-500/20 text-amberwarm-300 font-bold shrink-0">03</span>
+                <p class="text-forest-100/85"><strong class="text-white">Economic Impact:</strong> Supply chains stall, healthcare costs surge, and long-term economic stability erodes.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- SLIDE 6: TOPIC IV — CHALLENGES & IMPLEMENTATION           -->
+      <!-- ========================================================= -->
+      <section class="slide text-white" data-slide="6" data-title="IV. Challenges of Sustainable Development">
+        <div class="bg-media-layer bg-forest-950">
+          <img
+            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=80"
+            alt="Dramatic mountain peaks breaking through clouds"
+            onerror="this.style.display='none'"
+          />
+          <div class="absolute inset-0 bg-gradient-to-b from-forest-950/92 via-forest-950/86 to-forest-950/94"></div>
+        </div>
+
+        <div class="relative z-10 border-b border-white/15 pb-3.5 stagger delay-1">
+          <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Topic IV • Challenges and Implementation of Sustainable Development</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Core Obstacles to Thriving Within Planetary Boundaries</h2>
+          <p class="text-xs sm:text-sm text-forest-100/80 mt-1">Integrating economic prosperity, social inclusion, and environmental stewardship requires overcoming three systemic barriers.</p>
+        </div>
+
+        <div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-5 my-auto py-2">
+          <!-- Challenge 1: Complex Interdependencies -->
+          <div class="eco-card border-t-4 border-t-amberwarm-500 rounded-2xl p-6 flex flex-col justify-between stagger delay-2">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-amberwarm-400 uppercase tracking-wider">Challenge 01</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-amberwarm-500/15 text-amberwarm-300 text-[11px] font-semibold">Trade-Offs</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2.5">Complex Interdependencies</h3>
+              <p class="text-xs sm:text-sm text-forest-100/85 leading-relaxed mb-4">
+                Achieving sustainable development requires balancing multiple and sometimes conflicting goals—such as rapid industrial economic growth versus long-term environmental conservation.
+              </p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-forest-100">
+              <strong class="text-amberwarm-400 block mb-0.5">Core Tension:</strong>
+              Short-term electoral and quarterly profit cycles vs. multi-decade ecological recovery.
+            </div>
+          </div>
+
+          <!-- Challenge 2: Global Cooperation -->
+          <div class="eco-card border-t-4 border-t-emerald-400 rounded-2xl p-6 flex flex-col justify-between stagger delay-3">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">Challenge 02</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 text-[11px] font-semibold">Collective Action</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2.5">Global Cooperation</h3>
+              <p class="text-xs sm:text-sm text-forest-100/85 leading-relaxed mb-4">
+                Borderless threats like climate change and biodiversity loss demand international cooperation, policy coherence across sectors, and collaboration between governments, businesses, and civil society.
+              </p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-forest-100">
+              <strong class="text-emerald-300 block mb-0.5">Core Tension:</strong>
+              Bridging financing and technology gaps between developed and developing economies.
+            </div>
+          </div>
+
+          <!-- Challenge 3: Policy and Governance -->
+          <div class="eco-card border-t-4 border-t-sky-400 rounded-2xl p-6 flex flex-col justify-between stagger delay-4">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-sky-300 uppercase tracking-wider">Challenge 03</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-300 text-[11px] font-semibold">Institutions</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2.5">Policy and Governance</h3>
+              <p class="text-xs sm:text-sm text-forest-100/85 leading-relaxed mb-4">
+                Effective policies, clear regulations, and strong governance frameworks are essential to drive and enforce sustainable development at local, national, and global levels.
+              </p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-forest-100">
+              <strong class="text-sky-300 block mb-0.5">Core Tension:</strong>
+              Preventing weak enforcement, fragmented laws, and &ldquo;greenwashing&rdquo; without accountability.
+            </div>
+          </div>
+        </div>
+
+        <div class="relative z-10 glass-panel rounded-xl px-5 py-2.5 text-xs sm:text-sm text-forest-100 stagger delay-5">
+          <strong class="text-amberwarm-400">Planetary Boundaries Insight:</strong> Human development must remain within Earth's safe ecological limits (climate, freshwater, land, and biodiversity) to avoid irreversible tipping points.
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- SLIDE 7: TOPIC IV (CONT.) — IMPLEMENTATION PATHWAYS       -->
+      <!-- ========================================================= -->
+      <section class="slide text-white" data-slide="7" data-title="IV. Implementation Pathways">
+        <div class="bg-media-layer bg-forest-950">
+          <img
+            src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1800&q=80"
+            alt="Global and local leaders collaborating"
+            onerror="this.style.display='none'"
+          />
+          <div class="absolute inset-0 bg-gradient-to-r from-forest-950/95 via-forest-950/88 to-forest-950/85"></div>
+        </div>
+
+        <div class="relative z-10 border-b border-white/15 pb-3.5 stagger delay-1">
+          <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Topic IV (Implementation) • Turning Principles Into Action</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Multi-Level Implementation Frameworks</h2>
+        </div>
+
+        <div class="relative z-10 flex flex-col gap-3.5 my-auto py-2">
+          <!-- Level 1: Global Level -->
+          <div class="eco-card rounded-2xl p-4 sm:p-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-center stagger delay-2">
+            <div class="md:col-span-4 flex items-center gap-3.5">
+              <div class="w-11 h-11 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-300 font-display font-bold flex items-center justify-center shrink-0">01</div>
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-sky-300">Global Governance</span>
+                <h3 class="text-lg font-bold text-white">International Accords</h3>
+              </div>
+            </div>
+            <div class="md:col-span-8 bg-white/5 border border-white/10 rounded-xl p-3.5 text-xs sm:text-sm text-forest-50">
+              Coordinated global roadmaps such as the <strong class="text-sky-300">UN 2030 Agenda (17 SDGs)</strong> and the <strong class="text-sky-300">Paris Climate Agreement</strong> align nations around shared targets, climate finance, and cross-border accountability.
+            </div>
+          </div>
+
+          <!-- Level 2: National & Policy Level -->
+          <div class="eco-card rounded-2xl p-4 sm:p-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-center stagger delay-3">
+            <div class="md:col-span-4 flex items-center gap-3.5">
+              <div class="w-11 h-11 rounded-xl bg-amberwarm-500/20 border border-amberwarm-400/40 text-amberwarm-300 font-display font-bold flex items-center justify-center shrink-0">02</div>
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-amberwarm-400">National Policy</span>
+                <h3 class="text-lg font-bold text-white">Regulation &amp; Green Incentives</h3>
+              </div>
+            </div>
+            <div class="md:col-span-8 bg-white/5 border border-white/10 rounded-xl p-3.5 text-xs sm:text-sm text-forest-50">
+              Governments enact environmental protection laws, shift subsidies toward <strong class="text-amberwarm-300">clean energy and green infrastructure</strong>, and expand social safety nets in education and healthcare.
+            </div>
+          </div>
+
+          <!-- Level 3: Business & Local Community Level -->
+          <div class="eco-card rounded-2xl p-4 sm:p-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-center stagger delay-4">
+            <div class="md:col-span-4 flex items-center gap-3.5">
+              <div class="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-display font-bold flex items-center justify-center shrink-0">03</div>
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-300">Local &amp; Enterprise</span>
+                <h3 class="text-lg font-bold text-white">Circular Economy &amp; Civic Action</h3>
+              </div>
+            </div>
+            <div class="md:col-span-8 bg-white/5 border border-white/10 rounded-xl p-3.5 text-xs sm:text-sm text-forest-50">
+              Businesses adopt <strong class="text-emerald-300">ESG standards and circular production</strong> (designing out waste), while local communities and youth lead conservation, sustainable consumption, and civic oversight.
+            </div>
+          </div>
+        </div>
+
+        <div class="relative z-10 text-xs text-forest-100/80 flex items-center justify-between stagger delay-5">
+          <span><strong class="text-amberwarm-400">Multi-Stakeholder Synergy:</strong> Policy coherence works best when governments, businesses, and civil society act together.</span>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- SLIDE 8: TOPIC V — IMPORTANCE OF SUSTAINABLE DEVELOPMENT  -->
+      <!-- ========================================================= -->
+      <section class="slide text-white" data-slide="8" data-title="V. Importance of Sustainable Development">
+        <div class="bg-media-layer bg-forest-950">
+          <img
+            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=80"
+            alt="Golden sunrise over lush green landscape"
+            onerror="this.style.display='none'"
+          />
+          <div class="absolute inset-0 bg-gradient-to-r from-forest-950/94 via-forest-950/86 to-forest-950/80"></div>
+        </div>
+
+        <div class="relative z-10 border-b border-white/15 pb-3.5 stagger delay-1">
+          <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Topic V • Importance of Sustainable Development</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Why Sustainable Development Matters Urgently Today</h2>
+        </div>
+
+        <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 my-auto py-2">
+          <!-- Pillar 1: Intergenerational Survival & Ecological Integrity -->
+          <div class="eco-card rounded-2xl p-5 border-l-4 border-l-emerald-400 stagger delay-2">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-300">01 • Ecological Survival</span>
+              <span class="text-[11px] text-forest-100/60">Planetary Health</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Preserving Earth for Future Generations</h3>
+            <p class="text-xs sm:text-sm text-forest-100/85 leading-relaxed">
+              Curbs greenhouse gas emissions, halts biodiversity loss, and prevents the exhaustion of freshwater, fertile soil, and forests—ensuring future generations inherit a livable planet.
+            </p>
+          </div>
+
+          <!-- Pillar 2: Long-Term Economic Resilience -->
+          <div class="eco-card rounded-2xl p-5 border-l-4 border-l-amberwarm-500 stagger delay-3">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-amberwarm-400">02 • Economic Resilience</span>
+              <span class="text-[11px] text-forest-100/60">Future-Proof Growth</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Driving Green Innovation &amp; Decent Jobs</h3>
+            <p class="text-xs sm:text-sm text-forest-100/85 leading-relaxed">
+              Decouples prosperity from environmental destruction—sparking clean-tech industries, energy independence, resource efficiency, and resilient livelihoods insulated from fossil-fuel shocks.
+            </p>
+          </div>
+
+          <!-- Pillar 3: Social Justice, Equity & Peace -->
+          <div class="eco-card rounded-2xl p-5 border-l-4 border-l-sky-400 stagger delay-4">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-sky-300">03 • Social Justice &amp; Peace</span>
+              <span class="text-[11px] text-forest-100/60">Inclusive Society</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Reducing Poverty, Inequality &amp; Conflict</h3>
+            <p class="text-xs sm:text-sm text-forest-100/85 leading-relaxed">
+              Expands universal access to healthcare, quality education, and clean energy—addressing root causes of poverty, forced migration, and resource-driven social instability.
+            </p>
+          </div>
+
+          <!-- Pillar 4: Climate Adaptation & Disaster Resilience -->
+          <div class="eco-card rounded-2xl p-5 border-l-4 border-l-amberwarm-400 stagger delay-5">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-amberwarm-300">04 • Human Security</span>
+              <span class="text-[11px] text-forest-100/60">Climate Resilience</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Building Disaster-Resilient Communities</h3>
+            <p class="text-xs sm:text-sm text-forest-100/85 leading-relaxed">
+              Protects vulnerable nations and coastal cities against intensifying typhoons, droughts, and heatwaves through resilient infrastructure and ecosystem restoration.
+            </p>
+          </div>
+        </div>
+
+        <div class="relative z-10 glass-panel rounded-xl px-5 py-2.5 text-xs sm:text-sm text-forest-100 stagger delay-6">
+          <strong class="text-amberwarm-400">Bottom Line:</strong> Sustainable development is not a luxury—it is the essential blueprint for human dignity, economic stability, and planetary survival.
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- SLIDE 9: CONCLUSION, SYNTHESIS & GROUP 1 PRESENTERS       -->
+      <!-- ========================================================= -->
+      <section class="slide text-white" data-slide="9" data-title="Conclusion & Group 1 Presenters">
+        <div class="bg-media-layer bg-forest-950">
+          <img
+            src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1800&q=80"
+            alt="Planet Earth horizon at sunrise from space"
+            onerror="this.style.display='none'"
+          />
+          <div class="absolute inset-0 bg-gradient-to-r from-forest-950/95 via-forest-950/84 to-forest-900/62"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-forest-950/95 via-transparent to-forest-950/60"></div>
+        </div>
+
+        <div class="relative z-10 flex items-center justify-between stagger delay-1">
+          <span class="px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-forest-100 text-xs font-bold uppercase tracking-widest backdrop-blur-md">
+            Synthesis &amp; Key Takeaway
+          </span>
+          <span class="text-xs text-forest-100/75">GE2406 • Group 1 Presentation</span>
+        </div>
+
+        <!-- Core Synthesis Message -->
+        <div class="relative z-10 my-auto max-w-5xl w-full">
+          <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-3 stagger delay-2">
+            Building a <span class="font-editorial italic font-normal text-amberwarm-400">Thriving</span> Future Within Planetary Boundaries
+          </h2>
+          <p class="text-sm sm:text-base text-forest-100/90 leading-relaxed mb-5 max-w-3xl stagger delay-3">
+            True progress harmonizes <strong class="text-amberwarm-400">economic prosperity</strong>, <strong class="text-sky-300">social inclusion</strong>, and <strong class="text-emerald-300">environmental stewardship</strong>—guided by strong governance and global cooperation so current and future generations can flourish together.
+          </p>
+
+          <!-- Interactive 5-Topic Recap Strip -->
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-5 stagger delay-4">
+            <button onclick="goToSlide(2)" class="glass-panel text-left p-3 rounded-2xl hover:border-amberwarm-400/60 transition group">
+              <div class="text-[11px] text-amberwarm-400 font-bold uppercase">I. Intro</div>
+              <div class="text-xs sm:text-sm font-bold text-white mt-0.5 group-hover:text-amberwarm-300 transition">Present &amp; Future</div>
+              <div class="text-[11px] text-forest-100/70 mt-0.5">Brundtland 1987</div>
+            </button>
+            <button onclick="goToSlide(3)" class="glass-panel text-left p-3 rounded-2xl hover:border-emerald-400/60 transition group">
+              <div class="text-[11px] text-emerald-300 font-bold uppercase">II. Principles</div>
+              <div class="text-xs sm:text-sm font-bold text-white mt-0.5 group-hover:text-emerald-200 transition">3 Core Pillars</div>
+              <div class="text-[11px] text-forest-100/70 mt-0.5">Equity &amp; balance</div>
+            </button>
+            <button onclick="goToSlide(4)" class="glass-panel text-left p-3 rounded-2xl hover:border-sky-400/60 transition group">
+              <div class="text-[11px] text-sky-300 font-bold uppercase">III. Dimensions</div>
+              <div class="text-xs sm:text-sm font-bold text-white mt-0.5 group-hover:text-sky-200 transition">Planet &amp; People</div>
+              <div class="text-[11px] text-forest-100/70 mt-0.5">Nested systems</div>
+            </button>
+            <button onclick="goToSlide(6)" class="glass-panel text-left p-3 rounded-2xl hover:border-amberwarm-400/60 transition group">
+              <div class="text-[11px] text-amberwarm-400 font-bold uppercase">IV. Challenges</div>
+              <div class="text-xs sm:text-sm font-bold text-white mt-0.5 group-hover:text-amberwarm-300 transition">Policy &amp; Action</div>
+              <div class="text-[11px] text-forest-100/70 mt-0.5">Global cooperation</div>
+            </button>
+            <button onclick="goToSlide(8)" class="col-span-2 sm:col-span-1 text-left p-3 rounded-2xl bg-amberwarm-500/25 hover:bg-amberwarm-500/35 border border-amberwarm-400/50 backdrop-blur-md transition">
+              <div class="text-[11px] text-amberwarm-300 font-bold uppercase">V. Importance</div>
+              <div class="text-xs sm:text-sm font-bold text-white mt-0.5">Shared Survival</div>
+              <div class="text-[11px] text-forest-100/90 mt-0.5">Resilient future</div>
+            </button>
+          </div>
+
+          <!-- Group 1 Presenters Showcase -->
+          <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-amberwarm-400/35 stagger delay-5">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amberwarm-400"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.18em] text-amberwarm-400">Presented By • Group 1 Members</span>
+              </div>
+              <span class="text-[11px] text-forest-100/70 font-medium">GE2406 • STI College</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+              <div class="bg-white/8 hover:bg-white/14 border border-white/12 rounded-xl px-3.5 py-2.5 flex items-center gap-2.5 transition">
+                <span class="w-7 h-7 rounded-lg bg-amberwarm-500/25 border border-amberwarm-400/40 text-amberwarm-300 font-display font-bold text-xs flex items-center justify-center shrink-0">01</span>
+                <span class="text-sm font-display font-bold text-white tracking-wide">Alejaga</span>
+              </div>
+              <div class="bg-white/8 hover:bg-white/14 border border-white/12 rounded-xl px-3.5 py-2.5 flex items-center gap-2.5 transition">
+                <span class="w-7 h-7 rounded-lg bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 font-display font-bold text-xs flex items-center justify-center shrink-0">02</span>
+                <span class="text-sm font-display font-bold text-white tracking-wide">Arabaca</span>
+              </div>
+              <div class="bg-white/8 hover:bg-white/14 border border-white/12 rounded-xl px-3.5 py-2.5 flex items-center gap-2.5 transition">
+                <span class="w-7 h-7 rounded-lg bg-sky-500/25 border border-sky-400/40 text-sky-300 font-display font-bold text-xs flex items-center justify-center shrink-0">03</span>
+                <span class="text-sm font-display font-bold text-white tracking-wide">Balasabas</span>
+              </div>
+              <div class="bg-white/8 hover:bg-white/14 border border-white/12 rounded-xl px-3.5 py-2.5 flex items-center gap-2.5 transition">
+                <span class="w-7 h-7 rounded-lg bg-amberwarm-500/25 border border-amberwarm-400/40 text-amberwarm-300 font-display font-bold text-xs flex items-center justify-center shrink-0">04</span>
+                <span class="text-sm font-display font-bold text-white tracking-wide">Tudio</span>
+              </div>
+              <div class="col-span-2 sm:col-span-1 bg-white/8 hover:bg-white/14 border border-white/12 rounded-xl px-3.5 py-2.5 flex items-center gap-2.5 transition">
+                <span class="w-7 h-7 rounded-lg bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 font-display font-bold text-xs flex items-center justify-center shrink-0">05</span>
+                <span class="text-sm font-display font-bold text-white tracking-wide">Yañez</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- References Footer -->
+        <div class="relative z-10 pt-3 border-t border-white/15 text-[11px] text-forest-100/75 stagger delay-6">
+          <span class="font-bold text-amberwarm-400 uppercase tracking-wider mr-2">References:</span>
+          STI GE2406 Module 06 Handout • World Commission on Environment and Development (1987) <em>Our Common Future (Brundtland Report)</em> • Sachs, J. D. (2021) <em>The Age of Sustainable Development</em> • IISD / UN (2023) <em>Sustainable Development Goals Report</em>.
+        </div>
+      </section>
+
+      <aside id="notes-drawer" class="hidden absolute bottom-4 left-6 right-6 z-30 bg-forest-950/95 text-white border border-white/15 rounded-2xl p-5 shadow-2xl backdrop-blur-md">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amberwarm-500"></span>
+            <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-500">Speaker Cues &amp; Talking Points</span>
+          </div>
+          <button onclick="toggleNotes()" class="text-xs text-slate-300 hover:text-white px-2 py-1 rounded-lg bg-white/10">Close</button>
+        </div>
+        <p id="notes-content" class="text-sm text-forest-50 leading-relaxed"></p>
+      </aside>
+
+    </main>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- FLOATING BOTTOM NAVIGATION BAR                            -->
+  <!-- ========================================================= -->
+  <nav aria-label="Presentation Controls" class="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 sm:gap-3 bg-forest-950/90 text-white px-3.5 py-2 rounded-full border border-white/15 shadow-2xl backdrop-blur-md">
+    <!-- Prev Button -->
+    <button id="btn-prev" onclick="prevSlide()" title="Previous Slide (Left Arrow)" class="p-2 rounded-full hover:bg-white/15 disabled:opacity-35 disabled:pointer-events-none transition">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+    </button>
+
+    <!-- Slide Counter -->
+    <div id="slide-counter" class="text-xs font-display font-bold tracking-wider px-2 text-forest-100 min-w-[58px] text-center">
+      01 / 09
+    </div>
+
+    <div id="progress-track" onclick="seekProgress(event)" title="Click anywhere to jump" class="hidden sm:block w-36 md:w-52 h-2 bg-white/15 rounded-full overflow-hidden cursor-pointer relative">
+      <div id="progress-fill" class="h-full bg-gradient-to-r from-forest-500 to-amberwarm-500 rounded-full transition-all duration-300" style="width: 11.11%;"></div>
+    </div>
+
+    <!-- Clickable Progress Bar -->
+    <div id="progress-track" onclick="seekProgress(event)" title="Click anywhere to jump" class="hidden sm:block w-36 md:w-52 h-2 bg-white/15 rounded-full overflow-hidden cursor-pointer relative">
+      <div id="progress-fill" class="h-full bg-gradient-to-r from-forest-500 to-amberwarm-500 rounded-full transition-all duration-300" style="width: 8.33%;"></div>
+    </div>
+
+    <!-- Next Button -->
+    <button id="btn-next" onclick="nextSlide()" title="Next Slide (Right Arrow / Space)" class="p-2 rounded-full hover:bg-white/15 disabled:opacity-35 disabled:pointer-events-none transition">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+    </button>
+
+    <div class="w-px h-5 bg-white/15 mx-0.5"></div>
+
+    <!-- Speaker Notes Toggle -->
+    <button id="btn-notes" onclick="toggleNotes()" title="Toggle Presenter Notes (N)" class="px-2.5 py-1.5 rounded-full text-xs font-semibold hover:bg-white/15 transition flex items-center gap-1.5">
+      <svg class="w-3.5 h-3.5 text-amberwarm-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+      <span class="hidden md:inline">Notes</span>
+    </button>
+
+    <!-- Overview Grid Toggle -->
+    <button onclick="toggleOverview()" title="Slide Overview Grid (G)" class="px-2.5 py-1.5 rounded-full text-xs font-semibold hover:bg-white/15 transition flex items-center gap-1.5">
+      <svg class="w-3.5 h-3.5 text-forest-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+      <span class="hidden md:inline">Slides</span>
+    </button>
+
+    <!-- Fullscreen Toggle -->
+    <button onclick="toggleFullscreen()" title="Toggle Fullscreen (F)" class="p-2 rounded-full hover:bg-white/15 transition">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+    </button>
+  </nav>
+
+  <!-- ========================================================= -->
+  <!-- OVERVIEW GRID MODAL                                       -->
+  <!-- ========================================================= -->
+  <div id="overview-modal" class="hidden fixed inset-0 z-50 bg-forest-950/90 backdrop-blur-md flex items-center justify-center p-6">
+    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+        <div>
+          <h3 class="text-xl font-extrabold text-forest-900">Presentation Slide Overview</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Select any slide to jump immediately</p>
+        </div>
+        <button onclick="toggleOverview()" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+          ESC / Close
+        </button>
+      </div>
+      <div id="overview-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- JAVASCRIPT CONTROLLER                                     -->
+  <!-- ========================================================= -->
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const totalSlides = slides.length;
+    let currentSlide = 1;
+
+    const speakerNotes = {
+      1: "Welcome everyone! We are Group 1 presenting 'The Foundations of Sustainable Development' for GE2406. Today we will walk through five core topics: Introduction, Principles, Dimensions, Challenges & Implementation, and why Sustainable Development matters urgently today.",
+      2: "Topic I (Introduction): Start with the classic definition from the handout and the 1987 Brundtland Report ('Our Common Future'): meeting current needs without compromising future generations. Use the toggle on the right to contrast old extractive linear growth against regenerative sustainable development.",
+      3: "Topic II (Principles): Click through each circle of the Venn diagram—Economic Growth, Social Inclusion, and Environmental Protection. Also highlight the two ethical lenses: Intergenerational Equity (fairness across time) and Intragenerational Equity (fairness among communities today).",
+      4: "Topic III (Dimensions): Break down how sustainability operates in practice across Environmental (renewables, sustainable agriculture, water conservation), Social (education, healthcare, uplifting marginalized groups), and Economic (green tech, clean energy investments) dimensions—often summarized as the Triple Bottom Line: Planet, People, and Profit.",
+      5: "Topic III Continued (Systems View): Toggle between the classic 'Three Pillars' view and the 'Nested Dependencies' model. Explain that the economy operates inside human society, and society operates inside Earth's biosphere—meaning environmental degradation inevitably destabilizes social and economic well-being.",
+      6: "Topic IV (Challenges): Explain the three major barriers from the handout: (1) Complex Interdependencies (balancing short-term economic growth with conservation), (2) Global Cooperation (borderless climate and biodiversity crises), and (3) Policy and Governance (enforcing regulations locally, nationally, and globally).",
+      7: "Topic IV Continued (Implementation Pathways): Show how societies overcome those barriers across three levels—Global accords (UN 2030 Agenda & Paris Agreement), National policies (green incentives and regulations), and Local/Enterprise action (circular economy, ESG standards, and community stewardship).",
+      8: "Topic V (Importance): Conclude the core content by summarizing why sustainable development is vital: preserving Earth for future generations, driving resilient green jobs, reducing poverty and conflict, and building disaster-resilient communities.",
+      9: "Wrap up by synthesizing all five topics using the recap cards, acknowledge our Group 1 members (Alejaga, Arabaca, Balasabas, Tudio, and Yañez), and open the floor for questions."
+    };
+
+    const paradigmData = {
+      extractive: {
+        cardClass: "rounded-2xl p-5 bg-amberwarm-500/10 border border-amberwarm-400/35 transition-all",
+        tagClass: "inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amberwarm-500/20 text-amberwarm-300 mb-2",
+        tag: "Take • Make • Waste Approach",
+        title: "Extractive Linear Growth",
+        summary: "Prioritizes immediate GDP and short-term industrial output while treating natural resources as infinite and ignoring social or ecological side effects.",
+        points: [
+          "<strong>Time Horizon:</strong> Short-term quarterly or political gains",
+          "<strong>Resource Flow:</strong> Heavy fossil fuel extraction, pollution &amp; waste",
+          "<strong>Outcome:</strong> Widening inequality, climate risk &amp; resource depletion"
+        ],
+        dotColor: "bg-amberwarm-400"
+      },
+      sustainable: {
+        cardClass: "rounded-2xl p-5 bg-emerald-500/10 border border-emerald-400/35 transition-all",
+        tagClass: "inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 mb-2",
+        tag: "Regenerative & Cyclical Approach",
+        title: "Harmonized Development Within Limits",
+        summary: "Treats the economy, human well-being, and nature as an integrated system—designing growth that restores ecosystems and uplifts marginalized communities.",
+        points: [
+          "<strong>Time Horizon:</strong> Multi-generational stewardship over quick gains",
+          "<strong>Resource Flow:</strong> Circular reuse, clean energy &amp; conservation",
+          "<strong>Success Metric:</strong> Shared prosperity, health &amp; ecological balance"
+        ],
+        dotColor: "bg-emerald-400"
+      }
+    };
+
+    function setParadigm(mode) {
+      const data = paradigmData[mode];
+      if (!data) return;
+      const card = document.getElementById('paradigm-card');
+      const tag = document.getElementById('paradigm-tag');
+      const btnOld = document.getElementById('btn-paradigm-old');
+      const btnNew = document.getElementById('btn-paradigm-new');
+
+      card.className = data.cardClass;
+      tag.className = data.tagClass;
+      tag.textContent = data.tag;
+      document.getElementById('paradigm-title').textContent = data.title;
+      document.getElementById('paradigm-summary').textContent = data.summary;
+      document.getElementById('paradigm-points').innerHTML = data.points
+        .map(pt => `<li class="flex items-center gap-2.5"><span class="w-2 h-2 rounded-full ${data.dotColor}"></span><span>${pt}</span></li>`)
+        .join('');
+
+      if (mode === 'extractive') {
+        btnOld.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amberwarm-500 text-forest-950 shadow";
+        btnNew.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-forest-100/75 hover:text-white";
+      } else {
+        btnNew.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amberwarm-500 text-forest-950 shadow";
+        btnOld.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-forest-100/75 hover:text-white";
+      }
+    }
+
+    function setSystemModel(model) {
+      const svgNested = document.getElementById('svg-model-nested');
+      const svgPillars = document.getElementById('svg-model-pillars');
+      const btnNested = document.getElementById('btn-model-nested');
+      const btnPillars = document.getElementById('btn-model-pillars');
+      const box = document.getElementById('model-explanation');
+
+      if (model === 'nested') {
+        svgNested.classList.remove('hidden');
+        svgPillars.classList.add('hidden');
+        btnNested.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amberwarm-500 text-forest-950 shadow";
+        btnPillars.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-forest-100/80 hover:text-white";
+        box.innerHTML = `
+          <span class="text-xs font-bold uppercase tracking-widest text-emerald-300">Strong Sustainability Model</span>
+          <h3 class="text-xl font-bold text-white mt-1 mb-2">The Economy is a Wholly Owned Subsidiary of the Environment</h3>
+          <p class="text-sm text-forest-100/85 leading-relaxed">
+            Rather than three separate columns, the <strong class="text-white">Nested Dependencies</strong> model reveals a strict hierarchy: human society depends on a stable biosphere, and the economy exists inside society to serve human well-being.
+          </p>
+        `;
+      } else {
+        svgPillars.classList.remove('hidden');
+        svgNested.classList.add('hidden');
+        btnPillars.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amberwarm-500 text-forest-950 shadow";
+        btnNested.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-forest-100/80 hover:text-white";
+        box.innerHTML = `
+          <span class="text-xs font-bold uppercase tracking-widest text-amberwarm-400">Classic Structural Metaphor</span>
+          <h3 class="text-xl font-bold text-white mt-1 mb-2">Three Equal Pillars Supporting a Shared Roof</h3>
+          <p class="text-sm text-forest-100/85 leading-relaxed">
+            Like columns holding up a temple roof, sustainable development collapses if any single pillar—<strong class="text-emerald-300">Environment</strong>, <strong class="text-sky-300">Society</strong>, or <strong class="text-amberwarm-300">Economy</strong>—is neglected or weakened.
+          </p>
+        `;
+      }
+    }
+
+    const vennData = {
+      economic: {
+        badge: "Principle 01 • Economic Pillar",
+        title: "Economic Growth",
+        desc: "Ensuring long-term prosperity and fair economic opportunities for all through green technologies, sustainable business models, and clean energy investments."
+      },
+      social: {
+        badge: "Principle 02 • Social Pillar",
+        title: "Social Inclusion",
+        desc: "Promoting social equity and universal access to essential services such as education and healthcare—uplifting marginalized and vulnerable populations."
+      },
+      environmental: {
+        badge: "Principle 03 • Environmental Pillar",
+        title: "Environmental Protection",
+        desc: "Preserving natural resources and minimizing ecological footprints via renewable energy adoption, water conservation, and ecosystem protection."
+      },
+      center: {
+        badge: "Balanced Intersection",
+        title: "Sustainable Development",
+        desc: "Meeting current needs without compromising the ability of future generations to meet theirs by harmonizing economic, social, and environmental goals."
+      }
+    };
+
+    function selectVenn(key) {
+      const info = vennData[key];
+      if (!info) return;
+      document.getElementById('venn-badge').textContent = info.badge;
+      document.getElementById('venn-title').textContent = info.title;
+      document.getElementById('venn-desc').textContent = info.desc;
+
+      document.querySelectorAll('.venn-circle').forEach(el => el.classList.remove('selected'));
+      const activeNode = document.getElementById('node-' + key);
+      if (activeNode) activeNode.classList.add('selected');
+    }
+
+    function updateDeckUI() {
+      slides.forEach((slide, index) => {
+        const slideNum = index + 1;
+        slide.classList.remove('active', 'prev-exit');
+        if (slideNum === currentSlide) {
+          slide.classList.add('active');
+          slide.scrollTop = 0;
+        } else if (slideNum < currentSlide) {
+          slide.classList.add('prev-exit');
+        }
+      });
+
+      // Update counter & progress bar
+      const formattedCurrent = String(currentSlide).padStart(2, '0');
+      const formattedTotal = String(totalSlides).padStart(2, '0');
+      document.getElementById('slide-counter').textContent = `${formattedCurrent} / ${formattedTotal}`;
+      document.getElementById('progress-fill').style.width = `${(currentSlide / totalSlides) * 100}%`;
+
+      // Update button disabled states
+      document.getElementById('btn-prev').disabled = currentSlide === 1;
+      document.getElementById('btn-next').disabled = currentSlide === totalSlides;
+
+      // Update presenter notes text
+      document.getElementById('notes-content').textContent = speakerNotes[currentSlide] || '';
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateDeckUI();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateDeckUI();
+      }
+    }
+
+    function goToSlide(num) {
+      if (num >= 1 && num <= totalSlides) {
+        currentSlide = num;
+        updateDeckUI();
+        const modal = document.getElementById('overview-modal');
+        if (!modal.classList.contains('hidden')) {
+          modal.classList.add('hidden');
+        }
+      }
+    }
+
+    function seekProgress(event) {
+      const track = document.getElementById('progress-track');
+      const rect = track.getBoundingClientRect();
+      const clickRatio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+      const targetSlide = Math.max(1, Math.ceil(clickRatio * totalSlides));
+      goToSlide(targetSlide);
+    }
+
+    function toggleNotes() {
+      const drawer = document.getElementById('notes-drawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    function toggleOverview() {
+      const modal = document.getElementById('overview-modal');
+      const grid = document.getElementById('overview-grid');
+      if (modal.classList.contains('hidden')) {
+        grid.innerHTML = slides.map((s, idx) => {
+          const num = idx + 1;
+          const title = s.getAttribute('data-title') || `Slide ${num}`;
+          const isActive = num === currentSlide;
+          return `
+            <button onclick="goToSlide(${num})" class="text-left p-4 rounded-2xl border transition ${isActive ? 'bg-forest-900 text-white border-forest-900 shadow-md' : 'bg-stonebg hover:bg-forest-50 text-slate-800 border-slate-200'}">
+              <div class="text-xs font-bold uppercase tracking-wider ${isActive ? 'text-amberwarm-500' : 'text-forest-700'}">Slide ${String(num).padStart(2, '0')}</div>
+              <div class="text-sm font-bold mt-1">${title}</div>
+            </button>
+          `;
+        }).join('');
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    // Keyboard Navigation Support
+    document.addEventListener('keydown', (e) => {
+      const overviewOpen = !document.getElementById('overview-modal').classList.contains('hidden');
+      if (e.key === 'Escape' && overviewOpen) {
+        toggleOverview();
+        return;
+      }
+      if (overviewOpen) return;
+
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key.toLowerCase() === 'n') {
+        toggleNotes();
+      } else if (e.key.toLowerCase() === 'g') {
+        toggleOverview();
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      }
+    });
+
+    // Touch Swipe Support for Mobile / Tablet
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) nextSlide();
+        else prevSlide();
+      }
+    }, { passive: true });
+
+    // Initialize deck state
+    updateDeckUI();
+  </script>
+</body>
+</html>
